@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="col-lg-10 offset-lg-1">
+    <div class="text-center py-2 mt-3 mb-4"> <img src="{% static 'core/farologo.jpg' %}" style="height: 170px; width: 350px; "; alt=""></div>
+ <h3 class="text-center my-3">Il primo forum di Ginosa Marina</h3></div>
+
+
+
+    {% if request.user.is_staff %}
+    <div class="card-body container ">
+        <a class="btn btn btn-success mb-3" href="{% url 'crea_sezione' %}">Crea Sezione</a>
+    {% endif %}
+
+
+
+{% for sezione in lista_sezioni %}
+
+
+        <div class="card my-3">
+            <div class="card-header">
+                <h4><a href="{{sezione.get_absolute_url}}"><strong>{{ sezione.nome_sezione }}</strong></a></h4> 
+                <h6 class="mb-0">{{ sezione.descrizione }}</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <img src="{{sezione.logosezione.url}}" style="max-width: 100%;"> <br>
+                        <p class="mt-2 mb-0" style="font-size: 11pt;">Discussioni Totali:{{ sezione.discussione_set.count }} 
+                        <br>Messaggi Totali: {{ sezione.get_number_of_posts_in_section }}</p>
+                    </div>
+                    <div class="col-lg-9">
+                        <p>Ultime discussioni</p>
+                        <table class="table table-hover">
+                            <tbody>
+                                {% for discussione in sezione.get_last_discussions.all %}
+                                    <tr class="row">
+                                        <td class="col-lg-7 col-6">
+                                            <a href="{% url 'visualizza_discussione' pk=discussione.pk %}">{{ discussione.titolo }}</a>
+        
+                                        </td>
+                                        <td class="col-lg-3 col-3">
+                                            <a href="{% url 'user_profile' username=discussione.autore_discussione.username %}">{{ discussione.autore_discussione }}</a>
+        
+                                        </td>
+                                        <td class="col-lg-2 col-3">
+                                            posts: {{ discussione.post_set.count }}</a>
+        
+                                        </td>
+        
+                                    </tr>
+                               
+                                {% endfor %}
+                            </tbody>
+        
+        
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    <br>
+    <hr>
+    
+{% endfor %}
+
+{% endblock content %}

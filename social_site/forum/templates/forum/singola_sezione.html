@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+
+{%block head_title%} {{block.super}}- {{sezione.nome_sezione}} {%endblock head_title%}
+{%block content%}
+
+
+<div class="card my-3 px-3 py-3" style="background-color: aliceblue"> 
+    
+        <h3 class="">{{sezione.nome_sezione}}</h3>
+        <h6 class="card-text">{{sezione.descrizione}}</h6>
+
+    </div>
+
+<div class="card-body">
+    <a class="btn btn-primary" style="margin-bottom: 20px;" href="{% url 'crea_discussione' pk=sezione.pk %}">Crea Discussione</a>
+    <table class="table mt-3">
+        <thead>
+            <tr class="row">
+                <th class="col-lg-6 col-4">Titolo</th>
+                <th class="col-lg-2 col-3">Autore</th>
+                <th class="col-lg-2 col-2">Post</th>
+                <th class="col-lg-2 col-3">Ultimo Post</th><hr class="border-primary">
+
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr class="row">
+                
+              {% for discussione in discussioni %}
+            
+                <td class="col-lg-6 col-4">
+                    >
+                  <a href="{{ discussione.get_absolute_url }}">{{discussione.titolo}}</a>
+                </td>
+                <td class="col-lg-2 col-3">
+                  {{discussione.autore_discussione}}
+                </td>
+                <td class="col-lg-2 col-2">{{discussione.post_set.count}}</td>
+                <td class="col-lg-2 col-3">{{ discussione.post_set.last.data_creazione|timesince }}</td>
+          
+              {% endfor %}  
+            </tr>
+
+          </tbody>
+
+
+    </table>
+  
+
+
+   
+
+
+    
+
+
+</div>
+
+
+
+{% endblock content %}

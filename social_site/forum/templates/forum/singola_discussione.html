@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{%block head_title%} {{block.super}} - {{discussione.titolo}} {%endblock head_title%}
+
+
+{%block content%}
+
+
+
+
+{% for post in posts_discussione %}
+
+    <div class=" card-my5"> 
+    {% if forloop.first and not "pagina" in request.get_full_path %}
+        <div class="card-header ps-3">
+            <h3 class="mt-3">{{discussione.titolo}}</h3>
+            <p class="text-muted ps-3">{{discussione.data_creazione|date:"D d M Y "}}
+            <br> <strong> Sezione: </strong>{{discussione.sezione_appartenenza}}</p>
+
+        </div>
+
+    {% else %}
+        <div class="my-0 card-header py=0">
+            <p class="text-muted mb-0 " style="font-size: 9pt;">
+            {{post.data_creazione|date:"d M Y - H m"}}
+            {% if request.user == post.autore_post %}
+                <a href="{% url 'cancella_post' id=discussione.pk pk=post.pk %}">elimina <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+  
+ {% endif %}
+        <div class="card-body pt-2 ps-3" style="background-color: #ecf4f7;">
+                <div class="row">
+                    <div class="col-xl-2 col-4">
+                        <p><a href="{% url 'user_profile' username=post.autore_post.username %}"><strong>{{ post.autore_post}}</strong></a></p>
+                        <p class="my-0" style="font-size: 11pt;">Post:{{ post.autore_post.posts.count }}</p>
+                    </div>
+                    <div class="col-xl-10 col-8">
+                        <p class="my-0">{{ post.contenuto|linebreaks}}</p>
+                    </div>
+                </div>
+
+            <hr>
+
+        </div>
+    
+</div>
+
+
+    {% endfor %}
+ 
+    <div class="text-end" style="font-size: 10pt;">
+        <span class="step-links">
+            {% if posts_discussione.has_previous %}
+                <a href="?pagina=1">&laquo; prima</a>
+                <a href="?pagina={{ posts_discussione.previous_page_number }}">precedente</a>
+            {% endif %}
+    
+            <span class="current">
+                Pagina {{ posts_discussione.number }} di {{ posts_discussione.paginator.num_pages }}
+            </span>
+    
+            {% if posts_discussione.has_next %}
+                <a href="?pagina={{ posts_discussione.next_page_number }}">successiva</a>
+                <a href="?pagina={{ posts_discussione.paginator.num_pages }}">ultima &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <br>
+
+
+{% if request.user.is_authenticated%}
+    {% include 'forum/form_risposta.html' %}
+    
+    
+{% else %}
+    
+    <div class="mt-3 alert alert-primary container" role="alert">
+        Per partecipare alla discussione devi effettuare il <a href="{% url 'login' %}?next={{request.get_full_path}}"?next={{request.get_full_path}}>login!</a>
+   {%endif%}
+    {% endblock %}
