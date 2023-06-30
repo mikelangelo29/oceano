@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-k07hzrk@4bl#0bh!2se(tgu4o%hy*xj7*di(ufu4syo3^zjixh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['159.65.207.194']
 
 
 # Application definition
@@ -132,6 +132,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
