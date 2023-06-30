@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'social_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        'NAME': 'farodb',
+        'USER': 'faro_admin',
+        'PASSWORD': 'test123',
         'HOST': 'localhost',
         'PORT': '',
     }
